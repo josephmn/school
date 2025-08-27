@@ -14,8 +14,8 @@ import reactor.core.publisher.Mono;
  */
 public interface PeoplesRepositoryPort {
     Flux<ResponsePeopleDto> getAllPeoples();
-    Mono<ResponsePeopleDto> createPeople(RequestPeopleDto requestDto);
     Mono<ResponsePeopleDto> getPeopleById(Integer id);
+    Mono<ResponsePeopleDto> createPeople(RequestPeopleDto requestDto);
     Mono<ResponsePeopleDto> updatePeopleById(Integer id, RequestPeopleDto requestDto);
     Mono<ResponseDTO> deletePeopleById(Integer id);
     Flux<ResponsePeopleDto> getListPeopleByName(String name);

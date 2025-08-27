@@ -20,11 +20,13 @@ info:
 tags:
   - name: people
     description: Operations about people
+  - name: students
+    description: Operations about students
 paths:
   /people:
     get:
       tags:
-        - people
+        - peoples
       summary: Get all people.
       description: Get all people.
       operationId: getAllPeople
@@ -50,7 +52,7 @@ paths:
 
     post:
       tags:
-        - people
+        - peoples
       summary: Create people.
       description: Create people in database.
       operationId: createPeople
@@ -105,7 +107,7 @@ paths:
   /people/{id}:
     get:
       tags:
-        - people
+        - peoples
       summary: Get people by ID.
       description: Get people by ID.
       operationId: getPeopleById
@@ -133,9 +135,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
     put:
       tags:
-        - people
+        - peoples
       summary: Put people by ID.
       description: Put people by ID.
       operationId: updatePeopleById
@@ -170,9 +173,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+
     delete:
       tags:
-        - people
+        - peoples
       summary: Delete people by ID.
       description: Delete people by ID.
       operationId: deletePeopleById
@@ -204,7 +208,7 @@ paths:
   /people/findByName/{name}:
     get:
       tags:
-        - people
+        - peoples
       summary: Get list people by name.
       description: Get list people by name.
       operationId: getListPeopleByName
@@ -238,7 +242,7 @@ paths:
   /people/findByLastName/{lastName}:
     get:
       tags:
-        - people
+        - peoples
       summary: Get list people by last name.
       description: Get list people by last name.
       operationId: getListPeopleByLastName
@@ -272,7 +276,7 @@ paths:
   /people/updateByDocument/{document}:
     put:
       tags:
-        - people
+        - peoples
       summary: Put people by document.
       description: Put people by document.
       operationId: updatePeopleByDocument
@@ -297,6 +301,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponsePeopleDto'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /students:
+    get:
+      tags:
+        - students
+      summary: Get all student.
+      description: Get all student.
+      operationId: getAllStudent
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResponseStudentDto'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /students/{id}:
+    get:
+      tags:
+        - students
+      summary: Get student by ID.
+      description: Get student by ID.
+      operationId: getStudentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of student
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseStudentDto'
         '400':
           description: Invalid ID supplied
         '404':
@@ -439,6 +502,34 @@ components:
           pattern: '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) (0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$'
           example: '2025-08-02 07:48:56'
           description: Date when the people was registered
+
+    ResponseStudentDto:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 1
+          description: ID generated for student
+        people_code:
+          type: integer
+          format: int32
+          example: 10
+          description: ID generated for people
+        date_entry:
+          type: string
+          format: date
+          example: '2025-08-20'
+          description: Student registration date
+        status:
+          type: boolean
+          example: true
+          description: Status for student
+        observations:
+          type: string
+          maxLength: 100
+          example: 'interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla'
+          description: Observations of student
 
     Error:
       type: object
