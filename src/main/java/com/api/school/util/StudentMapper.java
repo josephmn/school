@@ -27,7 +27,8 @@ public interface StudentMapper {
         @Mapping(source = "peopleId", target = "peopleCode"),
         @Mapping(source = "entryDate", target = "dateEntry"),
         @Mapping(source = "status", target = "status"),
-        @Mapping(source = "observations", target = "observations")
+        @Mapping(source = "observations", target = "observations"),
+        @Mapping(source = "people", target = "people"),
     })
     ResponseStudentDto studentToResponse(StudentEntity student);
 }

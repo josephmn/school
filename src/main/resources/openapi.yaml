@@ -530,6 +530,8 @@ components:
           maxLength: 100
           example: 'interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla'
           description: Observations of student
+        people:
+          $ref: '#/components/schemas/ResponsePeopleDto'
 
     Error:
       type: object
