@@ -1,0 +1,45 @@
+server:
+  port: 9595
+spring:
+  application:
+    name: school
+    version: "@project.version@"
+  banner:
+    location: classpath:banner/banner-${SPRING_PROFILES_ACTIVE:dev}.txt
+  output:
+    ansi:
+      enabled: ALWAYS
+db:
+  host: localhost
+  port: 3306
+  database: demo
+  username: root
+  password: password
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui/index.html
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+openapi:
+  info:
+    title: School API - ${SPRING_PROFILES_ACTIVE:dev}
+    github:
+      url: https://github.com/josephmn/school.git
+      definition: https://github.com/josephmn/school/blob/main/src/main/resources/openapi.yaml
+    terms: http://swagger.io/terms/
+    contact:
+      name: Joseph Magallanes
+      email: josephcarlos.jcmn@gmail.com
+      url: https://www.linkedin.com/in/joseph-magallanes-nolazco/
+    servers:
+      url: http://localhost:${API_GATEWAY_PORT:server.port}
+      description: Local server Swagger
+logging:
+  level:
+    root: INFO
+created:
+  by: Joseph Magallanes
+  email: josephcarlos.jcmn@gmail.com
+  date: 2025-08-01
