@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import com.api.school.student.domain.ports.StudentRepositoryPort;
 import com.openapi.generate.api.StudentsApi;
+import com.openapi.generate.model.ResponseExampleDto;
 import com.openapi.generate.model.ResponseStudentDto;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
@@ -32,8 +33,19 @@ public class StudentController implements StudentsApi {
     }
 
     @Override
-    public Mono<ResponseEntity<ResponseStudentDto>> getStudentById(Integer id, ServerWebExchange exchange) {
+    public Mono<ResponseEntity<ResponseStudentDto>> getStudentById(
+        Integer id,
+        ServerWebExchange exchange) {
         return this.studentRepositoryPort.getStudentById(id)
+            .map(ResponseEntity::ok)
+            .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public Mono<ResponseEntity<ResponseExampleDto>> getStudentObjectById(
+        Integer id,
+        ServerWebExchange exchange) {
+        return this.studentRepositoryPort.getStudentObjectById(id)
             .map(ResponseEntity::ok)
             .defaultIfEmpty(ResponseEntity.notFound().build());
     }

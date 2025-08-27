@@ -34,7 +34,7 @@ openapi:
       email: josephcarlos.jcmn@gmail.com
       url: https://www.linkedin.com/in/joseph-magallanes-nolazco/
     servers:
-      url: http://localhost:${API_GATEWAY_PORT:server.port}
+      url: http://localhost:${server.port}
       description: Local server Swagger
 logging:
   level:

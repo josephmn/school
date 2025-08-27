@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import com.api.school.people.domain.ports.PeoplesRepositoryPort;
-import com.openapi.generate.api.PeoplesApi;
+import com.openapi.generate.api.PeopleApi;
 import com.openapi.generate.model.RequestPeopleDto;
 import com.openapi.generate.model.ResponseDTO;
 import com.openapi.generate.model.ResponsePeopleDto;
@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-public class PeopleController implements PeoplesApi {
+public class PeopleController implements PeopleApi {
 
     private final PeoplesRepositoryPort peoplesRepositoryPort;
 

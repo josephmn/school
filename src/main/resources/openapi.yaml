@@ -26,7 +26,7 @@ paths:
   /people:
     get:
       tags:
-        - peoples
+        - people
       summary: Get all people.
       description: Get all people.
       operationId: getAllPeople
@@ -52,7 +52,7 @@ paths:
 
     post:
       tags:
-        - peoples
+        - people
       summary: Create people.
       description: Create people in database.
       operationId: createPeople
@@ -107,7 +107,7 @@ paths:
   /people/{id}:
     get:
       tags:
-        - peoples
+        - people
       summary: Get people by ID.
       description: Get people by ID.
       operationId: getPeopleById
@@ -138,7 +138,7 @@ paths:
 
     put:
       tags:
-        - peoples
+        - people
       summary: Put people by ID.
       description: Put people by ID.
       operationId: updatePeopleById
@@ -176,7 +176,7 @@ paths:
 
     delete:
       tags:
-        - peoples
+        - people
       summary: Delete people by ID.
       description: Delete people by ID.
       operationId: deletePeopleById
@@ -208,7 +208,7 @@ paths:
   /people/findByName/{name}:
     get:
       tags:
-        - peoples
+        - people
       summary: Get list people by name.
       description: Get list people by name.
       operationId: getListPeopleByName
@@ -242,7 +242,7 @@ paths:
   /people/findByLastName/{lastName}:
     get:
       tags:
-        - peoples
+        - people
       summary: Get list people by last name.
       description: Get list people by last name.
       operationId: getListPeopleByLastName
@@ -276,7 +276,7 @@ paths:
   /people/updateByDocument/{document}:
     put:
       tags:
-        - peoples
+        - people
       summary: Put people by document.
       description: Put people by document.
       operationId: updatePeopleByDocument
@@ -360,6 +360,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseStudentDto'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /students/object/{id}:
+    get:
+      tags:
+        - students
+      summary: Get student by ID.
+      description: Get student by ID.
+      operationId: getStudentObjectById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of student
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseExampleDto'
         '400':
           description: Invalid ID supplied
         '404':
@@ -532,6 +564,74 @@ components:
           description: Observations of student
         people:
           $ref: '#/components/schemas/ResponsePeopleDto'
+
+    ResponseExampleDto:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 1
+          description: ID generated for student
+        type_document:
+          type: string
+          example: 'DNI'
+          description: Document type (DNI, CE, etc.)
+        number_document:
+          type: string
+          example: '78653423'
+          description: Document number
+        name_first:
+          type: string
+          maxLength: 100
+          example: Jhon
+          description: First name of people
+        name_last:
+          type: string
+          maxLength: 100
+          example: James
+          description: Last name of people
+        date_birth:
+          type: string
+          format: date
+          example: '1993-12-01'
+          description: Birth date of people
+        gender:
+          type: string
+          pattern: '^(M|F)$'
+          maxLength: 1
+          example: 'M'
+          description: Gender (M, F, etc.)
+        address:
+          type: string
+          maxLength: 100
+          example: '400 RELLA BOULEVARD'
+          description: Address of people
+        phone:
+          type: string
+          maxLength: 15
+          example: '+51998765765'
+          description: Phone number of people
+        email:
+          type: string
+          format: email
+          maxLength: 50
+          example: "correo@domain.com"
+          description: Email of people
+        date_entry:
+          type: string
+          format: date
+          example: '2025-08-20'
+          description: Student registration date
+        status:
+          type: boolean
+          example: true
+          description: Status for student
+        observations:
+          type: string
+          maxLength: 100
+          example: 'interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla'
+          description: Observations of student
 
     Error:
       type: object
