@@ -6,7 +6,6 @@ import com.api.school.exception.types.NotFoundException;
 import com.api.school.people.domain.ports.PeoplesRepositoryPort;
 import com.api.school.people.infrastructure.repository.PeopleRepositoryReactive;
 import com.api.school.util.PeopleMapper;
-import com.api.school.util.UtilFunctions;
 import com.openapi.generate.model.RequestPeopleDto;
 import com.openapi.generate.model.ResponseDTO;
 import com.openapi.generate.model.ResponsePeopleDto;
@@ -50,10 +49,10 @@ public class PeopleRepositoryAdapter implements PeoplesRepositoryPort {
     @Override
     public Mono<ResponsePeopleDto> createPeople(RequestPeopleDto requestDto) {
         log.info("Start execute method createPeople");
-        if (requestDto.getDateRegister() == null || requestDto.getDateRegister().isBlank()) {
-            final String createDate = UtilFunctions.getCurrentDate();
-            requestDto.setDateRegister(createDate);
-        }
+//        if (requestDto.getDateRegister() == null || requestDto.getDateRegister().isBlank()) {
+//            final String createDate = UtilFunctions.getCurrentDate();
+//            requestDto.setDateRegister(createDate);
+//        }
         final String documentNumber = requestDto.getNumberDocument();
         return peopleRepositoryReactive.findByDocumentNumber(documentNumber)
             .flatMap(existingCustomer -> Mono.error(new AlreadyExistsException(

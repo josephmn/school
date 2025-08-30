@@ -22,6 +22,8 @@ tags:
     description: Operations about people
   - name: students
     description: Operations about students
+  - name: teachers
+    description: Operations about teachers
 paths:
   /people:
     get:
@@ -403,6 +405,64 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+  /teachers:
+    get:
+      tags:
+        - teachers
+      summary: Get all teacher.
+      description: Get all teacher.
+      operationId: getAllTeacher
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResponseTeacherDto'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /teachers/{id}:
+    get:
+      tags:
+        - teachers
+      summary: Get teacher by ID.
+      description: Get teacher by ID.
+      operationId: getTeacherById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of teacher
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseTeacherDto'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   schemas:
     RequestPeopleDto:
@@ -465,11 +525,6 @@ components:
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
           example: "correo@domain.com"
           description: Email of people
-        date_register:
-          type: string
-          pattern: '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) (0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$'
-          example: '2025-08-02 07:48:56'
-          description: Date when the people was registered
 
     ResponsePeopleDto:
       type: object
@@ -486,17 +541,20 @@ components:
           description: Document type (DNI, CE, etc.)
         number_document:
           type: string
-          maxLength: 15
+          minLength: 8
+          maxLength: 12
           pattern: '^(?!0+$)(?:\d{8}|[a-zA-Z0-9]{9,12})$'
           example: '78653423'
           description: Document number
         name_first:
           type: string
+          minLength: 2
           maxLength: 100
           example: Jhon
           description: First name of people
         name_last:
           type: string
+          minLength: 2
           maxLength: 100
           example: James
           description: Last name of people
@@ -508,6 +566,7 @@ components:
         gender:
           type: string
           pattern: '^(M|F)$'
+          minLength: 1
           maxLength: 1
           example: 'M'
           description: Gender (M, F, etc.)
@@ -518,7 +577,8 @@ components:
           description: Address of people
         phone:
           type: string
-          maxLength: 15
+          minLength: 1
+          maxLength: 20
           pattern: '^\+?[1-9]\d{1,14}$'
           example: '+51998765765'
           description: Phone number of people
@@ -529,11 +589,16 @@ components:
           pattern: '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
           example: "correo@domain.com"
           description: Email of people
-        date_register:
+        date_created:
           type: string
           pattern: '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) (0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$'
           example: '2025-08-02 07:48:56'
           description: Date when the people was registered
+        date_modified:
+          type: string
+          pattern: '^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) (0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$'
+          example: '2025-08-10 04:55:23'
+          description: Date when the people was updated
 
     ResponseStudentDto:
       type: object
@@ -543,11 +608,11 @@ components:
           format: int32
           example: 1
           description: ID generated for student
-        people_code:
-          type: integer
-          format: int32
-          example: 10
-          description: ID generated for people
+#        people_code:
+#          type: integer
+#          format: int32
+#          example: 10
+#          description: ID generated for people
         date_entry:
           type: string
           format: date
@@ -562,6 +627,50 @@ components:
           maxLength: 100
           example: 'interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla'
           description: Observations of student
+        people:
+          $ref: '#/components/schemas/ResponsePeopleDto'
+
+    ResponseTeacherDto:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 1
+          description: ID generated for teacher
+#        people_code:
+#          type: integer
+#          format: int32
+#          example: 10
+#          description: ID generated for people
+        specialty:
+          type: string
+          example: Project Manager
+          description: Specialty of teacher
+        date_entry:
+          type: string
+          format: date
+          example: '2025-08-20'
+          description: Student registration date
+        type_contract:
+          type: string
+          pattern: '^(HONORARIOS|INDETERMINADO|PART-TIME)$'
+          example: INDETERMINADO
+          description: Contract type for teacher
+        salary:
+          type: number
+          minimum: 0
+          maximum: 999999999.99
+          #multipleOf: 0.01
+          example: 1500.99
+          description: |
+            Salary for teacher. 
+            Stored as DECIMAL(10,2) in database.
+            Maximum value: 999,999,999.99
+        status:
+          type: boolean
+          example: true
+          description: Status for teacher
         people:
           $ref: '#/components/schemas/ResponsePeopleDto'
 

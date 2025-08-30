@@ -2,7 +2,9 @@ package com.api.school.people.infrastructure.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.relational.core.mapping.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,9 +30,12 @@ public class PeopleEntity {
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
-    private String gender;
+    private Character gender;
     private String address;
     private String phone;
     private String email;
-    private LocalDateTime registerDate;
+    @CreatedDate
+    private LocalDateTime createdDate;
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
 }

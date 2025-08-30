@@ -36,7 +36,19 @@ public class StudentRepositoryAdapter implements StudentRepositoryPort {
     public Flux<ResponseStudentDto> getAllStudents() {
         log.info("Start execute method getAllStudents");
         return studentRepositoryReactive.findAll()
-            .map(studentMapper::studentToResponse)
+            .switchIfEmpty(Mono.error(new AlreadyExistsException("Students not found data")))
+            .flatMap(student -> {
+                if (student.getPeopleId() == null) {
+                    return Mono.just(studentMapper.studentToResponse(student));
+                }
+                return peopleRepositoryReactive.findById(student.getPeopleId())
+                    .map(people -> {
+                        final ResponseStudentDto dto = studentMapper.studentToResponse(student);
+                        dto.setPeople(peopleMapper.peopleToResponse(people));
+                        return dto;
+                    })
+                    .defaultIfEmpty(studentMapper.studentToResponse(student));
+            })
             .doOnTerminate(() -> log.info("Finished execute method getAllStudents"));
     }
 
@@ -79,7 +91,7 @@ public class StudentRepositoryAdapter implements StudentRepositoryPort {
                         dto.setNameFirst(people.getFirstName());
                         dto.setNameLast(people.getLastName());
                         dto.setDateBirth(people.getBirthDate());
-                        dto.setGender(people.getGender());
+                        dto.setGender(people.getGender().toString());
                         dto.setAddress(people.getAddress());
                         dto.setPhone(people.getPhone());
                         dto.setEmail(people.getEmail());

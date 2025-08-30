@@ -38,8 +38,7 @@ public interface PeopleMapper {
         @Mapping(source = "gender", target = "gender"),
         @Mapping(source = "address", target = "address"),
         @Mapping(source = "phone", target = "phone"),
-        @Mapping(source = "email", target = "email"),
-        @Mapping(source = "dateRegister", target = "registerDate", qualifiedByName = "stringToLocalDateTime")
+        @Mapping(source = "email", target = "email")
     })
     PeopleEntity requestToPeople(RequestPeopleDto request);
 
@@ -59,7 +58,8 @@ public interface PeopleMapper {
         @Mapping(source = "address", target = "address"),
         @Mapping(source = "phone", target = "phone"),
         @Mapping(source = "email", target = "email"),
-        @Mapping(source = "registerDate", target = "dateRegister", qualifiedByName = "localDateTimeToString")
+        @Mapping(source = "createdDate", target = "dateCreated", qualifiedByName = "localDateTimeToString"),
+        @Mapping(source = "modifiedDate", target = "dateModified", qualifiedByName = "localDateTimeToString")
     })
     ResponsePeopleDto peopleToResponse(PeopleEntity people);
 

@@ -24,7 +24,7 @@ public interface StudentMapper {
      */
     @Mappings({
         @Mapping(source = "id", target = "code"),
-        @Mapping(source = "peopleId", target = "peopleCode"),
+//        @Mapping(source = "peopleId", target = "peopleCode"),
         @Mapping(source = "entryDate", target = "dateEntry"),
         @Mapping(source = "status", target = "status"),
         @Mapping(source = "observations", target = "observations"),

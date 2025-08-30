@@ -5,16 +5,19 @@ spring:
     name: school
     version: "@project.version@"
   banner:
-    location: classpath:banner/banner-${SPRING_PROFILES_ACTIVE:dev}.txt
+    location: classpath:banner/banner-${SPRING_PROFILES_ACTIVE}.txt
   output:
     ansi:
       enabled: ALWAYS
-db:
-  host: localhost
-  port: 3306
-  database: demo
-  username: root
-  password: password
+  r2dbc:
+    url: ${MYSQL_HOST}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+    pool:
+      enabled: true
+      max-size: 10
+      initial-size: 5
+      max-idle-time: 10m
 springdoc:
   swagger-ui:
     enabled: true
@@ -24,7 +27,7 @@ springdoc:
     path: /v3/api-docs
 openapi:
   info:
-    title: School API - ${SPRING_PROFILES_ACTIVE:dev}
+    title: School API - ${SPRING_PROFILES_ACTIVE}
     github:
       url: https://github.com/josephmn/school.git
       definition: https://github.com/josephmn/school/blob/main/src/main/resources/openapi.yaml
@@ -39,6 +42,8 @@ openapi:
 logging:
   level:
     root: INFO
+#    org.springframework.r2dbc.core: DEBUG
+#    io.r2dbc.spi: DEBUG
 created:
   by: Joseph Magallanes
   email: josephcarlos.jcmn@gmail.com
