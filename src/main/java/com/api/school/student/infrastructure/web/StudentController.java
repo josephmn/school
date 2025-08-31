@@ -8,6 +8,7 @@ import com.api.school.student.domain.ports.StudentRepositoryPort;
 import com.openapi.generate.api.StudentsApi;
 import com.openapi.generate.model.ResponseExampleDto;
 import com.openapi.generate.model.ResponseStudentDto;
+import com.openapi.generate.model.ResponseStudentSimpleDto;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -26,19 +27,33 @@ public class StudentController implements StudentsApi {
     private final StudentRepositoryPort studentRepositoryPort;
 
     @Override
-    public Mono<ResponseEntity<Flux<ResponseStudentDto>>> getAllStudent(
+    public Mono<ResponseEntity<Flux<ResponseStudentSimpleDto>>> getAllStudent(
+        ServerWebExchange exchange) {
+        return Mono.just(ResponseEntity.ok(this.studentRepositoryPort.getAllStudentsSimple()))
+            .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public Mono<ResponseEntity<Flux<ResponseStudentDto>>> getAllStudentDetail(
         ServerWebExchange exchange) {
         return Mono.just(ResponseEntity.ok(this.studentRepositoryPort.getAllStudents()))
             .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
     @Override
-    public Mono<ResponseEntity<ResponseStudentDto>> getStudentById(
+    public Mono<ResponseEntity<ResponseStudentSimpleDto>> getStudentById(
         Integer id,
         ServerWebExchange exchange) {
-        return this.studentRepositoryPort.getStudentById(id)
+        return this.studentRepositoryPort.getStudentByIdSimple(id)
             .map(ResponseEntity::ok)
             .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public Mono<ResponseEntity<ResponseStudentDto>> getStudentByIdDetail(
+        Integer id,
+        ServerWebExchange exchange) {
+        return StudentsApi.super.getStudentByIdDetail(id, exchange);
     }
 
     @Override

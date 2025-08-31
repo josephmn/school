@@ -5,6 +5,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import com.api.school.student.infrastructure.entity.StudentEntity;
 import com.openapi.generate.model.ResponseStudentDto;
+import com.openapi.generate.model.ResponseStudentSimpleDto;
 
 /**
  * StudentMapper.
@@ -31,4 +32,18 @@ public interface StudentMapper {
         @Mapping(source = "people", target = "people")
     })
     ResponseStudentDto studentToResponse(StudentEntity student);
+
+    /**
+     * Maps a StudentEntity to a ResponseStudentSimpleDto.
+     * @param student the StudentEntity to map
+     * @return the mapped ResponseStudentSimpleDto
+     */
+    @Mappings({
+        @Mapping(source = "id", target = "code"),
+        @Mapping(source = "peopleId", target = "peopleCode"),
+        @Mapping(source = "entryDate", target = "dateEntry"),
+        @Mapping(source = "status", target = "status"),
+        @Mapping(source = "observations", target = "observations")
+    })
+    ResponseStudentSimpleDto studentToSimpleResponse(StudentEntity student);
 }

@@ -10,6 +10,7 @@ import com.api.school.util.PeopleMapper;
 import com.api.school.util.StudentMapper;
 import com.openapi.generate.model.ResponseExampleDto;
 import com.openapi.generate.model.ResponseStudentDto;
+import com.openapi.generate.model.ResponseStudentSimpleDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -33,10 +34,19 @@ public class StudentRepositoryAdapter implements StudentRepositoryPort {
     private final ExampleMapper exampleMapper;
 
     @Override
+    public Flux<ResponseStudentSimpleDto> getAllStudentsSimple() {
+        log.info("Start execute method getAllStudentsSimple");
+        return studentRepositoryReactive.findAll()
+            .switchIfEmpty(Mono.error(new AlreadyExistsException("Students response simple data not found")))
+            .map(studentMapper::studentToSimpleResponse)
+            .doOnTerminate(() -> log.info("Finished execute method getAllStudentsSimple"));
+    }
+
+    @Override
     public Flux<ResponseStudentDto> getAllStudents() {
         log.info("Start execute method getAllStudents");
         return studentRepositoryReactive.findAll()
-            .switchIfEmpty(Mono.error(new AlreadyExistsException("Students not found data")))
+            .switchIfEmpty(Mono.error(new AlreadyExistsException("Students data not found")))
             .flatMap(student -> {
                 if (student.getPeopleId() == null) {
                     return Mono.just(studentMapper.studentToResponse(student));
@@ -50,6 +60,16 @@ public class StudentRepositoryAdapter implements StudentRepositoryPort {
                     .defaultIfEmpty(studentMapper.studentToResponse(student));
             })
             .doOnTerminate(() -> log.info("Finished execute method getAllStudents"));
+    }
+
+    @Override
+    public Mono<ResponseStudentSimpleDto> getStudentByIdSimple(Integer id) {
+        log.info("Start execute method getStudentByIdSimple");
+        return studentRepositoryReactive.findById(id)
+            .switchIfEmpty(Mono.error(new AlreadyExistsException(
+                "Student not found with id: %s", id)))
+            .map(studentMapper::studentToSimpleResponse)
+            .doOnTerminate(() -> log.info("Finished execute method getStudentByIdSimple"));
     }
 
     @Override

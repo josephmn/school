@@ -110,8 +110,8 @@ paths:
     get:
       tags:
         - people
-      summary: Get people by ID.
-      description: Get people by ID.
+      summary: Get people by id.
+      description: Get people by id.
       operationId: getPeopleById
       parameters:
         - name: id
@@ -128,7 +128,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponsePeopleDto'
         '400':
-          description: Invalid ID supplied
+          description: Invalid id supplied
         '404':
           description: User not found
         default:
@@ -141,8 +141,8 @@ paths:
     put:
       tags:
         - people
-      summary: Put people by ID.
-      description: Put people by ID.
+      summary: Put people by id.
+      description: Put people by id.
       operationId: updatePeopleById
       parameters:
         - name: id
@@ -179,8 +179,8 @@ paths:
     delete:
       tags:
         - people
-      summary: Delete people by ID.
-      description: Delete people by ID.
+      summary: Delete people by id.
+      description: Delete people by id.
       operationId: deletePeopleById
       parameters:
         - name: id
@@ -197,7 +197,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseDTO'
         '400':
-          description: Invalid ID supplied
+          description: Invalid id supplied
         '404':
           description: User not found
         default:
@@ -265,7 +265,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/ResponsePeopleDto'
         '400':
-          description: Invalid ID supplied
+          description: Invalid id supplied
         '404':
           description: User not found
         default:
@@ -304,7 +304,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponsePeopleDto'
         '400':
-          description: Invalid ID supplied
+          description: Invalid id supplied
         '404':
           description: User not found
         default:
@@ -329,6 +329,33 @@ paths:
               schema:
                 type: array
                 items:
+                  $ref: '#/components/schemas/ResponseStudentSimpleDto'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /students/detail:
+    get:
+      tags:
+        - students
+      summary: Get all student.
+      description: Get all student.
+      operationId: getAllStudentDetail
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
                   $ref: '#/components/schemas/ResponseStudentDto'
         '400':
           description: Invalid username supplied
@@ -345,9 +372,41 @@ paths:
     get:
       tags:
         - students
-      summary: Get student by ID.
-      description: Get student by ID.
+      summary: Get student by id.
+      description: Get student by id.
       operationId: getStudentById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id of student
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseStudentSimpleDto'
+        '400':
+          description: Invalid id supplied
+        '404':
+          description: User not found
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /students/detail/{id}:
+    get:
+      tags:
+        - students
+      summary: Get student by id with detail.
+      description: Get student by id with detail.
+      operationId: getStudentByIdDetail
       parameters:
         - name: id
           in: path
@@ -363,7 +422,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseStudentDto'
         '400':
-          description: Invalid ID supplied
+          description: Invalid id supplied
         '404':
           description: User not found
         default:
@@ -377,8 +436,8 @@ paths:
     get:
       tags:
         - students
-      summary: Get student by ID.
-      description: Get student by ID.
+      summary: Get student by id.
+      description: Get student by id.
       operationId: getStudentObjectById
       parameters:
         - name: id
@@ -395,7 +454,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseExampleDto'
         '400':
-          description: Invalid ID supplied
+          description: Invalid id supplied
         '404':
           description: User not found
         default:
@@ -436,8 +495,8 @@ paths:
     get:
       tags:
         - teachers
-      summary: Get teacher by ID.
-      description: Get teacher by ID.
+      summary: Get teacher by id.
+      description: Get teacher by id.
       operationId: getTeacherById
       parameters:
         - name: id
@@ -454,7 +513,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResponseTeacherDto'
         '400':
-          description: Invalid ID supplied
+          description: Invalid id supplied
         '404':
           description: User not found
         default:
@@ -533,7 +592,7 @@ components:
           type: integer
           format: int32
           example: 1
-          description: ID generated for people
+          description: Id generated for people
         type_document:
           type: string
           pattern: '^(DNI|CE)$'
@@ -600,6 +659,34 @@ components:
           example: '2025-08-10 04:55:23'
           description: Date when the people was updated
 
+    ResponseStudentSimpleDto:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          example: 1
+          description: Id generated for student
+        people_code:
+          type: integer
+          format: int32
+          example: 10
+          description: Id generated for people
+        date_entry:
+          type: string
+          format: date
+          example: '2025-08-20'
+          description: Student registration date
+        status:
+          type: boolean
+          example: true
+          description: Status for student
+        observations:
+          type: string
+          maxLength: 100
+          example: 'interdum eu tincidunt in leo maecenas pulvinar lobortis est phasellus sit amet erat nulla'
+          description: Observations of student
+
     ResponseStudentDto:
       type: object
       properties:
@@ -607,12 +694,12 @@ components:
           type: integer
           format: int32
           example: 1
-          description: ID generated for student
-#        people_code:
-#          type: integer
-#          format: int32
-#          example: 10
-#          description: ID generated for people
+          description: Id generated for student
+        #        people_code:
+        #          type: integer
+        #          format: int32
+        #          example: 10
+        #          description: Id generated for people
         date_entry:
           type: string
           format: date
@@ -637,12 +724,12 @@ components:
           type: integer
           format: int32
           example: 1
-          description: ID generated for teacher
-#        people_code:
-#          type: integer
-#          format: int32
-#          example: 10
-#          description: ID generated for people
+          description: Id generated for teacher
+        #        people_code:
+        #          type: integer
+        #          format: int32
+        #          example: 10
+        #          description: Id generated for people
         specialty:
           type: string
           example: Project Manager
@@ -681,7 +768,7 @@ components:
           type: integer
           format: int32
           example: 1
-          description: ID generated for student
+          description: Id generated for student
         type_document:
           type: string
           example: 'DNI'
